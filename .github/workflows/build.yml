@@ -1,4 +1,4 @@
-name: Build API + Angular + Capacitor Android
+name: Build API + Angular
 
 on:
   push:
@@ -14,95 +14,54 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # .NET 9 setup + cache
       - name: Setup .NET 9
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
-          cache : false
+          cache: false
 
-      # Node.js 20 setup + cache
-      - name: Setup Node.js 20
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: ./game/package-lock.json
+          node-version: 22
+          cache: npm
+          cache-dependency-path: client/package-lock.json
 
-      # Java + Gradle setup + cache
-      - name: Setup Java 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle'
-
-      # Install Angular deps
-      - name: Install Angular dependencies
-        working-directory: ./game
+      - name: Install client dependencies
+        working-directory: ./client
         run: npm ci
 
       - name: Run Angular lint
-        working-directory: ./game
+        working-directory: ./client
         run: npm run lint
 
       - name: Build Angular (production)
-        working-directory: ./game
+        working-directory: ./client
         run: npm run build -- --configuration production
 
       - name: Copy Angular build to API wwwroot
-        run: cp -r ./game/dist/slot-machine/browser/* ./Api/SlotMachine/wwwroot/
+        run: |
+          mkdir -p ./Api/IczTask/wwwroot
+          cp -r ./client/dist/slot-machine/browser/* ./Api/IczTask/wwwroot/
 
-      # .NET build + tests
       - name: Restore .NET dependencies
         working-directory: ./Api
-        run: dotnet restore
+        run: dotnet restore IczTask.sln
 
       - name: Run .NET tests
         working-directory: ./Api
-        run: dotnet test --configuration Release --no-restore --logger "trx;LogFileName=test_results.trx"
+        run: dotnet test IczTask.sln --configuration Release --no-restore --logger "trx;LogFileName=test_results.trx"
 
-      - name: Build .NET project
+      - name: Build .NET solution
         working-directory: ./Api
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build IczTask.sln --configuration Release --no-restore
 
       - name: Publish .NET project
-        working-directory: ./Api/SlotMachine
-        run: dotnet publish -c Release -o ./bin/Release/net9.0/publish
+        working-directory: ./Api/IczTask
+        run: dotnet publish -c Release -o ./bin/Release/net9.0/publish --no-build
 
       - name: Upload publish artifact
         uses: actions/upload-artifact@v4
         with:
-          name: slotmachine-build
-          path: ./Api/SlotMachine/bin/Release/net9.0/publish
-
-      # ⚡ Capacitor Android build
-      
-      - name: Setup Android SDK path
-        run: |
-          echo "ANDROID_SDK_ROOT=/usr/local/lib/android/sdk" >> $GITHUB_ENV
-          echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
-          echo "/usr/local/lib/android/sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
-          echo "/usr/local/lib/android/sdk/cmdline-tools/bin" >> $GITHUB_PATH
-          echo "/usr/local/lib/android/sdk/platform-tools" >> $GITHUB_PATH
-          which sdkmanager || true
-          yes | sdkmanager --licenses || true
-      - name: Set Android versionName and versionCode
-        run: |
-          VERSION_CODE=${{ github.run_number }}
-          VERSION_NAME="1.0.${VERSION_CODE}"
-          echo "Setting versionName=$VERSION_NAME and versionCode=$VERSION_CODE"
-          sed -i "s/versionCode [0-9]\+/versionCode $VERSION_CODE/" game/android/app/build.gradle
-          sed -i "s/versionName \".*\"/versionName \"$VERSION_NAME\"/" game/android/app/build.gradle
-      - name: Build Capacitor Android APK
-        working-directory: ./game
-        run: |
-          npx cap sync android
-          cd android
-          ./gradlew assembleDebug
-
-      - name: Upload Android APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-apk
-          path: game/android/app/build/outputs/apk/debug/app-debug.apk
+          name: icztask-api
+          path: ./Api/IczTask/bin/Release/net9.0/publish

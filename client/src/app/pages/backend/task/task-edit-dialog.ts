@@ -5,6 +5,7 @@ import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Task, TaskApiService } from '../../../api-client';
 
@@ -18,6 +19,7 @@ import { Task, TaskApiService } from '../../../api-client';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatCheckboxModule,
     FormsModule
   ],
   styles: [`
@@ -56,6 +58,11 @@ import { Task, TaskApiService } from '../../../api-client';
       required
     >
   </mat-form-field>
+
+  <mat-checkbox [(ngModel)]="data.user.finished" name="finished">
+    Finished
+  </mat-checkbox>
+
   <div *ngIf="addError" class="error-message" style="color: red; padding-top: 8px;">
     {{ addError }}
   </div>
@@ -78,7 +85,19 @@ export class UserEditDialog {
     if (form.invalid) return;
     this.addError = null;
     const user = this.data.user;
-    this.api.apiTaskPost({ name: user.name, description: user.description }).subscribe({
+    const payload: Task = {
+      name: user.name,
+      description: user.description,
+      finished: user.finished ?? false
+    };
+    if (user.id != null) {
+      payload.id = user.id;
+    }
+    const request =
+      user.id != null
+        ? this.api.apiTaskPut(payload)
+        : this.api.apiTaskPost(payload);
+    request.subscribe({
       next: () => this.dialogRef.close(true),
       error: (err) => {
         if (err.status === 400) {

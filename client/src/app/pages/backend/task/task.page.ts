@@ -60,6 +60,15 @@ private router = inject(Router);
     });
   }
 
+  edit(task: Task) {
+    const dialogRef = this.dialog.open(UserEditDialog, {
+      data: { user: { ...task } }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.loadData();
+    });
+  }
+
 
 
  delete(user: Task) {

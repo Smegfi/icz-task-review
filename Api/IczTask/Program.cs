@@ -1,5 +1,7 @@
 using System.Text;
+using IczTask.Http;
 using IczTask.Options;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -86,6 +88,10 @@ public class Program
 
         builder.Services.AddAuthorization();
 
+        builder.Services.AddTransient<XApiKeyOutgoingHeaderHandler>();
+        builder.Services
+            .AddHttpClient(Microsoft.Extensions.Options.Options.DefaultName)
+            .AddHttpMessageHandler<XApiKeyOutgoingHeaderHandler>();
 
         builder.Services.AddCors(options =>
         {

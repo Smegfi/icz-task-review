@@ -11,20 +11,23 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserEditDialog } from './task-edit-dialog';
 import { MatMenuModule } from '@angular/material/menu';
-
-
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-user-page',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatButtonModule,
     MatIconModule,
     MatTableModule,
     MatDialogModule,
     MatMenuModule,
-    MatButtonModule
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './task.page.html',
@@ -38,13 +41,14 @@ private router = inject(Router);
 
   displayedColumns: string[] = ['id', 'name', 'description', 'finished', 'actions'];
   items: Task[] = [];
+  nameFilter = '';
 
   ngOnInit(): void {
     this.loadData();
   }
 
   loadData() {
-    this.api.apiTaskGet().subscribe(data => this.items = data);
+    this.api.apiTaskGet(this.nameFilter).subscribe(data => (this.items = data));
   }
 
   add() {

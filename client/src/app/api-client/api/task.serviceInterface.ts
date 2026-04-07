@@ -25,8 +25,9 @@ export interface TaskApiServiceInterface {
     /**
      * 
      * 
+     * @param namefilter 
      */
-    apiTaskGet(extraHttpRequestParams?: any): Observable<Array<Task>>;
+    apiTaskGet(namefilter?: string, extraHttpRequestParams?: any): Observable<Array<Task>>;
 
     /**
      * 

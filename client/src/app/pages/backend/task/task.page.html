@@ -1,7 +1,21 @@
-
-   <button mat-icon-button color="primary" (click)="add()">
-        <mat-icon>add</mat-icon>
-      </button>
+<div class="toolbar">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Name</mat-label>
+    <input
+      matInput
+      [(ngModel)]="nameFilter"
+      (keyup.enter)="loadData()"
+      type="text"
+      autocomplete="off"
+    />
+  </mat-form-field>
+  <button mat-icon-button color="primary" type="button" (click)="loadData()" aria-label="Filter">
+    <mat-icon>search</mat-icon>
+  </button>
+  <button mat-icon-button color="primary" type="button" (click)="add()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
 
 <table mat-table [dataSource]="items" class="mat-elevation-z8">
 

@@ -36,9 +36,16 @@ public class TaskController(ApplicationDbContext dbContext) : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<List<TaskEntity>>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<List<TaskEntity>>> GetAll(
+        [FromQuery] string? namefilter,
+        CancellationToken cancellationToken)
     {
-        return await dbContext.Tasks.ToListAsync(cancellationToken);
+        IQueryable<TaskEntity> query = dbContext.Tasks;
+        if (namefilter!=null)
+        {
+            query = query.Where(t => t.Name.Contains(namefilter!));    
+        }    
+        return await query.ToListAsync(cancellationToken);
     }
 
     [HttpDelete("{id:int}")]
@@ -51,3 +58,5 @@ public class TaskController(ApplicationDbContext dbContext) : ControllerBase
         return NoContent();
     }
 }
+
+

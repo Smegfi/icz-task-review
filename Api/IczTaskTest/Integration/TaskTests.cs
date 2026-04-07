@@ -108,6 +108,19 @@ public class TaskTests
         defaultPage.EnsureSuccessStatusCode();
     }
 
+    [Test]
+    [Property("Seeder", "IczTaskTest.Integration.Seeders.DefaultSeeder")]
+    [Property("MockUser", "admin;Admin")]
+    public async System.Threading.Tasks.Task GetAll_FilterByName()
+    {
+        var response = await _client.GetAsync("/api/Task?name=task");
+        response.EnsureSuccessStatusCode();
+        var tasks = await response.Content.ReadFromJsonAsync<List<Task>>();
+        Assert.That(tasks, Is.Not.Null);
+        Assert.That(tasks!.Count, Is.EqualTo(2));
+        Assert.That(tasks.Select(t => t.Name), Is.EquivalentTo(new[] { "task2", "task3" }));
+    }
+
 
     [Test]
     [Property("Seeder", "IczTaskTest.Integration.Seeders.DefaultSeeder")]

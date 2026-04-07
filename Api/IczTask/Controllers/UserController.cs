@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 
-namespace SlotMachine.Controllers;
+namespace IczTask.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

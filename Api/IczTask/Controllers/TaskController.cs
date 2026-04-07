@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Task = SlotMachine.Models.Task;
+using Task = IczTask.Models.Task;
 
-namespace SlotMachine.Controllers;
+namespace IczTask.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace SlotMachine.Migrations
+namespace IczTask.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

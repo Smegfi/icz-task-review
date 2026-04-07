@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using SlotMachine;
+using IczTask;
 
-namespace SlotMachineTest.Integration.Infrastructure;
+namespace IczTaskTest.Integration.Infrastructure;
 
 public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
     where TProgram : class

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SlotMachine.Options;
+using IczTask.Options;
 
-namespace SlotMachine;
+namespace IczTask;
 
 public class Program
 {

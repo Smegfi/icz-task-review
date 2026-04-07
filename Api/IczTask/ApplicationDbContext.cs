@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Task = SlotMachine.Models.Task;
+using Task = IczTask.Models.Task;
 
-namespace SlotMachine;
+namespace IczTask;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {

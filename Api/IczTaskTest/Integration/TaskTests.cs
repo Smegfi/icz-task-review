@@ -1,12 +1,12 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using SlotMachine;
-using SlotMachineTest.Integration.Infrastructure;
-using SlotMachineTest.Integration.Seeders;
-using Task = SlotMachine.Models.Task;
+using IczTask;
+using IczTaskTest.Integration.Infrastructure;
+using IczTaskTest.Integration.Seeders;
+using Task = IczTask.Models.Task;
 
-namespace SlotMachineTest.Integration;
+namespace IczTaskTest.Integration;
 
 public class TaskTests
 {
@@ -75,7 +75,7 @@ public class TaskTests
     public async System.Threading.Tasks.Task Create()
     {
         var defaultPage = await _client.PostAsJsonAsync("/api/Task",
-            new Task { Name = "User2", Description = "654321456", Finished = false });
+            new Task { Name = "Task2", Description = "654321456", Finished = false });
         defaultPage.EnsureSuccessStatusCode();
     }
     
@@ -86,7 +86,7 @@ public class TaskTests
     public async System.Threading.Tasks.Task Update()
     {
         var defaultPage = await _client.PutAsJsonAsync("/api/Task",
-            new Task { Name = "User2", Description = "654321456", Finished = false });
+            new Task { Name = "Task2", Description = "654321456", Finished = false });
         defaultPage.EnsureSuccessStatusCode();
     }
     
@@ -98,9 +98,9 @@ public class TaskTests
     public async System.Threading.Tasks.Task GetById()
     {
         var dbContext = _factory.Services.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var user = dbContext.Tasks.First();
+        var task = dbContext.Tasks.First();
 
-        var defaultPage = await _client.GetAsync($"/api/Task/{user.Id}");
+        var defaultPage = await _client.GetAsync($"/api/Task/{task.Id}");
         defaultPage.EnsureSuccessStatusCode();
     }
 

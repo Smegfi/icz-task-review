@@ -1,4 +1,4 @@
-namespace SlotMachine.Options;
+namespace IczTask.Options;
 
 public class TaskSettings
 {

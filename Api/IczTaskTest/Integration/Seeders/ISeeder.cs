@@ -1,6 +1,6 @@
-using SlotMachine;
+using IczTask;
 
-namespace SlotMachineTest.Integration.Seeders;
+namespace IczTaskTest.Integration.Seeders;
 
 public interface ISeeder
 {

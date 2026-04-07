@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace SlotMachineTest.Integration.Infrastructure;
+namespace IczTaskTest.Integration.Infrastructure;
 
 public class TestAuthHandlerUserProvider
 {

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "slot-machine": {
+    "icz-task-client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "slot-machine:build:production"
+              "buildTarget": "icz-task-client:build:production"
             },
             "development": {
-              "buildTarget": "slot-machine:build:development"
+              "buildTarget": "icz-task-client:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -99,7 +99,7 @@
           "builder": "@storybook/angular:start-storybook",
           "options": {
             "configDir": ".storybook",
-            "browserTarget": "slot-machine:build",
+            "browserTarget": "icz-task-client:build",
             "compodoc": false,
             "port": 6006,
             "sourceMap": true
@@ -109,7 +109,7 @@
           "builder": "@storybook/angular:build-storybook",
           "options": {
             "configDir": ".storybook",
-            "browserTarget": "slot-machine:build",
+            "browserTarget": "icz-task-client:build",
             "compodoc": false,
             "outputDir": "storybook-static"
           }

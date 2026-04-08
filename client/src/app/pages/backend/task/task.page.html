@@ -20,10 +20,6 @@
 <div class="table-scroll mat-elevation-z8">
 <table mat-table [dataSource]="items" class="tasks-table">
 
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef> ID </th>
-    <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
-  </ng-container>
 
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Name </th>

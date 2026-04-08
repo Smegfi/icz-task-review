@@ -1,7 +1,7 @@
 using System.Text;
 using IczTask.Http;
 using IczTask.Options;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -22,6 +22,15 @@ public class Program
 
 // 🔹 Controllers
         builder.Services.AddControllers();
+
+        builder.Services.AddHybridCache(options =>
+        {
+            options.DefaultEntryOptions = new HybridCacheEntryOptions
+            {
+                Expiration = TimeSpan.FromMinutes(2),
+                LocalCacheExpiration = TimeSpan.FromMinutes(2)
+            };
+        });
 
 // 🔹 Swagger/OpenAPI
         builder.Services.AddEndpointsApiExplorer();

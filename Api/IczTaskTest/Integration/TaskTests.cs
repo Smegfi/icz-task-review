@@ -113,7 +113,7 @@ public class TaskTests
     [Property("MockUser", "admin;Admin")]
     public async System.Threading.Tasks.Task GetAll_FilterByName()
     {
-        var response = await _client.GetAsync("/api/Task?name=task");
+        var response = await _client.GetAsync("/api/Task?namefilter=task");
         response.EnsureSuccessStatusCode();
         var tasks = await response.Content.ReadFromJsonAsync<List<Task>>();
         Assert.That(tasks, Is.Not.Null);

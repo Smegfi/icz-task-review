@@ -8,7 +8,7 @@ using TaskEntity = IczTask.Models.Task;
 namespace IczTask.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/tasks")]
 public class TaskController(
     ApplicationDbContext dbContext,
     HybridCache cache,
@@ -53,14 +53,14 @@ public class TaskController(
     [HttpGet]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<List<TaskEntity>>> GetAll(
-        [FromQuery] string? namefilter,
+        [FromQuery] string? name,
         CancellationToken cancellationToken)
     {
-        var filterKey = namefilter ?? string.Empty;
+        var filterKey = name ?? string.Empty;
         var list = await cache.GetOrCreateAsync(
             $"tasks:list:{filterKey}",
             async cancel => await dbContext.Tasks
-                .Where(t => string.IsNullOrEmpty(namefilter) || t.Name.Contains(namefilter))
+                .Where(t => string.IsNullOrEmpty(name) || t.Name.Contains(name))
                 .ToListAsync(cancel),
             tags: [TaskCacheTag],
             cancellationToken: cancellationToken);

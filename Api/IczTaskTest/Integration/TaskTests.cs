@@ -70,7 +70,7 @@ public class TaskTests
     [Property("MockUser", "admin;Admin")]
     public async System.Threading.Tasks.Task Create()
     {
-        var defaultPage = await _client.PostAsJsonAsync("/api/Task",
+        var defaultPage = await _client.PostAsJsonAsync("/api/tasks",
             new Task { Name = "Task2", Description = "654321456", Finished = false });
         defaultPage.EnsureSuccessStatusCode();
     }
@@ -81,8 +81,8 @@ public class TaskTests
     [Property("MockUser", "admin;Admin")]
     public async System.Threading.Tasks.Task Update()
     {
-        var defaultPage = await _client.PutAsJsonAsync("/api/Task",
-            new Task { Name = "Task2", Description = "654321456", Finished = false });
+        var defaultPage = await _client.PutAsJsonAsync("/api/tasks",
+            new Task { Id = 2, Name = "Task2", Description = "654321456", Finished = false });
         defaultPage.EnsureSuccessStatusCode();
     }
 
@@ -95,7 +95,7 @@ public class TaskTests
         var dbContext = _factory.Services.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var task = dbContext.Tasks.First();
 
-        var defaultPage = await _client.GetAsync($"/api/Task/{task.Id}");
+        var defaultPage = await _client.GetAsync($"/api/tasks/{task.Id}");
         defaultPage.EnsureSuccessStatusCode();
     }
 
@@ -104,7 +104,7 @@ public class TaskTests
     [Property("MockUser", "admin;Admin")]
     public async System.Threading.Tasks.Task GetAll()
     {
-        var defaultPage = await _client.GetAsync("/api/Task");
+        var defaultPage = await _client.GetAsync("/api/tasks");
         defaultPage.EnsureSuccessStatusCode();
     }
 
@@ -113,7 +113,7 @@ public class TaskTests
     [Property("MockUser", "admin;Admin")]
     public async System.Threading.Tasks.Task GetAll_FilterByName()
     {
-        var response = await _client.GetAsync("/api/Task?namefilter=task");
+        var response = await _client.GetAsync("/api/tasks?name=task");
         response.EnsureSuccessStatusCode();
         var tasks = await response.Content.ReadFromJsonAsync<List<Task>>();
         Assert.That(tasks, Is.Not.Null);
@@ -127,7 +127,7 @@ public class TaskTests
     [Property("MockUser", "admin;Admin")]
     public async System.Threading.Tasks.Task Delete()
     {
-        var defaultPage = await _client.DeleteAsync("/api/Task/1");
+        var defaultPage = await _client.DeleteAsync("/api/tasks/1");
         defaultPage.EnsureSuccessStatusCode();
     }
 }

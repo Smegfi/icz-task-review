@@ -25,36 +25,36 @@ export interface TaskApiServiceInterface {
     /**
      * 
      * 
-     * @param namefilter 
+     * @param name 
      */
-    apiTaskGet(namefilter?: string, extraHttpRequestParams?: any): Observable<Array<Task>>;
+    apiTasksGet(name?: string, extraHttpRequestParams?: any): Observable<Array<Task>>;
 
     /**
      * 
      * 
      * @param id 
      */
-    apiTaskIdDelete(id: number, extraHttpRequestParams?: any): Observable<{}>;
+    apiTasksIdDelete(id: number, extraHttpRequestParams?: any): Observable<{}>;
 
     /**
      * 
      * 
      * @param id 
      */
-    apiTaskIdGet(id: number, extraHttpRequestParams?: any): Observable<Task>;
+    apiTasksIdGet(id: number, extraHttpRequestParams?: any): Observable<Task>;
 
     /**
      * 
      * 
      * @param task 
      */
-    apiTaskPost(task?: Task, extraHttpRequestParams?: any): Observable<Task>;
+    apiTasksPost(task?: Task, extraHttpRequestParams?: any): Observable<Task>;
 
     /**
      * 
      * 
      * @param task 
      */
-    apiTaskPut(task?: Task, extraHttpRequestParams?: any): Observable<Task>;
+    apiTasksPut(task?: Task, extraHttpRequestParams?: any): Observable<Task>;
 
 }

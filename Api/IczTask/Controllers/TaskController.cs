@@ -2,13 +2,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
 using TaskEntity = IczTask.Models.Task;
 
 namespace IczTask.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TaskController(ApplicationDbContext dbContext, HybridCache cache) : ControllerBase
+public class TaskController(
+    ApplicationDbContext dbContext,
+    HybridCache cache,
+    ILogger<TaskController> logger) : ControllerBase
 {
     private const string TaskCacheTag = "tasks";
 
@@ -19,6 +23,7 @@ public class TaskController(ApplicationDbContext dbContext, HybridCache cache) :
         var retD = dbContext.Tasks.Add(task).Entity;
         await dbContext.SaveChangesAsync(cancellationToken);
         await cache.RemoveByTagAsync(TaskCacheTag, cancellationToken);
+        logger.LogInformation("Byl VYTVOŘEN nový úkol {TaskId}", retD.Id);
         return retD;
     }
 
@@ -29,6 +34,7 @@ public class TaskController(ApplicationDbContext dbContext, HybridCache cache) :
         var retD = dbContext.Tasks.Update(task).Entity;
         await dbContext.SaveChangesAsync(cancellationToken);
         await cache.RemoveByTagAsync(TaskCacheTag, cancellationToken);
+        logger.LogInformation("Byl UPRAVEN úkol číslo: {TaskId}", retD.Id);
         return retD;
     }
 
@@ -69,6 +75,7 @@ public class TaskController(ApplicationDbContext dbContext, HybridCache cache) :
         dbContext.Tasks.Remove(entity);
         await dbContext.SaveChangesAsync(cancellationToken);
         await cache.RemoveByTagAsync(TaskCacheTag, cancellationToken);
+        logger.LogInformation("Byl SMAZÁN úkol číslo: {TaskId}", id);
         return NoContent();
     }
 }

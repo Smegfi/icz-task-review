@@ -23,7 +23,7 @@ public class TaskController(
         await dbContext.SaveChangesAsync(cancellationToken);
         await cache.RemoveByTagAsync(TaskCacheTag, cancellationToken);
         logger.LogInformation("Byl VYTVOŘEN nový úkol {TaskId}", retD.Id);
-        return retD;
+        return CreatedAtAction(nameof(GetById), new { id = retD.Id }, retD);
     }
 
     [HttpPut]
@@ -43,9 +43,11 @@ public class TaskController(
     {
         var entity = await cache.GetOrCreateAsync(
             $"task:{id}",
-            async cancel => await dbContext.Tasks.SingleAsync(x => x.Id == id, cancel),
+            async cancel =>
+                await dbContext.Tasks.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancel),
             tags: [TaskCacheTag],
             cancellationToken: cancellationToken);
+        if (entity is null) return NotFound();
         return entity;
     }
 

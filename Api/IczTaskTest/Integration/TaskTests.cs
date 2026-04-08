@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using IczTask;
 using IczTaskTest.Integration.Infrastructure;
@@ -72,6 +73,7 @@ public class TaskTests
     {
         var defaultPage = await _client.PostAsJsonAsync("/api/tasks",
             new Task { Name = "Task2", Description = "654321456", Done = false });
+        Assert.That(defaultPage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
         defaultPage.EnsureSuccessStatusCode();
     }
 
@@ -97,6 +99,15 @@ public class TaskTests
 
         var defaultPage = await _client.GetAsync($"/api/tasks/{task.Id}");
         defaultPage.EnsureSuccessStatusCode();
+    }
+
+    [Test]
+    [Property("Seeder", "IczTaskTest.Integration.Seeders.DefaultSeeder")]
+    [Property("MockUser", "admin;Admin")]
+    public async System.Threading.Tasks.Task GetById_NotFound()
+    {
+        var response = await _client.GetAsync("/api/tasks/99999");
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
 
     [Test]

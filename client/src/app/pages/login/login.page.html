@@ -1,7 +1,7 @@
 <mat-grid-list cols="1" rowHeight="100vh" gutterSize="0">
   <mat-grid-tile style="display:flex;justify-content:center;align-items:center;">
     <mat-card style="width:360px;padding:24px;">
-      <h2>Přihlášení</h2>
+      <h2>Sign in</h2>
       <form [formGroup]="form" style="display:flex;flex-direction:column;gap:16px;" (ngSubmit)="onSubmit()"
         autocomplete="off">
         <mat-form-field>
@@ -18,13 +18,13 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Heslo</mat-label>
+          <mat-label>Password</mat-label>
           <input matInput [type]="'password'" formControlName="password" autocomplete="new-password" name="password" />
         </mat-form-field>
 
         <div style="display:flex;justify-content:center;">
           <button mat-flat-button color="primary" type="submit">
-            Přihlásit
+            Sign in
           </button>
         </div>
 

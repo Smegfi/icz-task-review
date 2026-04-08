@@ -12,19 +12,19 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     this.logger.error('Global error handler:', err);
 
-    let title = 'Chyba aplikace';
-    let message = 'Došlo k neočekávané chybě.';
+    let title = 'Application error';
+    let message = 'An unexpected error occurred.';
 
     switch (true) {
       case err instanceof HttpErrorResponse:{
         const httpErrorMap: Record<number, { title: string; message: string }> = {
           401: {
-            title: 'Neplatný klíč',
-            message: 'Vaše přihlášení není platné (401).'
+            title: 'Invalid credentials',
+            message: 'Your session is not valid (401).'
           },
           500: {
-            title: 'Chyba serveru',
-            message: 'Server je momentálně nedostupný (500).'
+            title: 'Server error',
+            message: 'The server is temporarily unavailable (500).'
           }
         };
         
@@ -49,7 +49,7 @@ export class GlobalErrorHandler implements ErrorHandler {
       title: title,
       text: message,
       icon: 'error',
-      confirmButtonText: 'Zkusit znovu (Reload)',
+      confirmButtonText: 'Reload',
       allowOutsideClick: false 
     }).then(() => {
       window.location.reload();

@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Task, TaskApiService } from '../../../api-client';
 
 @Component({
-  selector: 'app-user-edit-dialog',
+  selector: 'app-task-edit-dialog',
   standalone: true,
   imports: [
     CommonModule,
@@ -21,7 +21,7 @@ import { Task, TaskApiService } from '../../../api-client';
     MatCheckboxModule
   ],
   template: `
-    <h2 mat-dialog-title>{{ data?.id ? 'Edit Task' : 'New Task' }}</h2>
+    <h2 mat-dialog-title>{{ data?.id ? 'Edit task' : 'New task' }}</h2>
     <form [formGroup]="form" (ngSubmit)="submit()">
       <mat-dialog-content>
         <div>
@@ -52,11 +52,11 @@ import { Task, TaskApiService } from '../../../api-client';
     </div>
   `
 })
-export class UserEditDialog {
+export class TaskEditDialog {
   
   private fb = inject(FormBuilder);
   private api = inject(TaskApiService);
-  public dialogRef = inject(MatDialogRef<UserEditDialog>);
+  public dialogRef = inject(MatDialogRef<TaskEditDialog>);
   public data = inject<Task | undefined>(MAT_DIALOG_DATA);
   
   errors: string[] = [];

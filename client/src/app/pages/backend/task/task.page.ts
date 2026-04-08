@@ -7,9 +7,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { Task, TaskApiService } from '../../../api-client';
 import { ConfirmDialog } from '../confirm-dialog';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserEditDialog } from './task-edit-dialog';
+import { TaskEditDialog } from './task-edit-dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,7 +16,7 @@ import { finalize } from 'rxjs';
 import { LoadingService } from '../../../services/loading.service';
 
 @Component({
-  selector: 'app-user-page',
+  selector: 'app-task-page',
   standalone: true,
   imports: [
     CommonModule,
@@ -38,8 +36,6 @@ import { LoadingService } from '../../../services/loading.service';
 export class TaskPage implements OnInit {
   private api = inject(TaskApiService);
   private dialog = inject(MatDialog);
-  private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
   private loadingService = inject(LoadingService);
 
   displayedColumns: string[] = ['id', 'name', 'description', 'finished', 'actions'];
@@ -59,7 +55,7 @@ export class TaskPage implements OnInit {
   }
 
   add() {
-    const dialogRef = this.dialog.open(UserEditDialog, {
+    const dialogRef = this.dialog.open(TaskEditDialog, {
       data: {} as Task
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -68,7 +64,7 @@ export class TaskPage implements OnInit {
   }
 
   edit(task: Task) {
-    const dialogRef = this.dialog.open(UserEditDialog, {
+    const dialogRef = this.dialog.open(TaskEditDialog, {
       data: { ...task }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -78,33 +74,23 @@ export class TaskPage implements OnInit {
 
 
 
- delete(user: Task) {
-  const dialogRef = this.dialog.open(ConfirmDialog, {
-    data: {
-      title: 'Confirm Deletion',
-      message: `Are you sure you want to delete task "${user.name}"?`
-    }
-  });
+  delete(task: Task) {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: {
+        title: 'Confirm deletion',
+        message: `Are you sure you want to delete task "${task.name}"?`
+      }
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.loadingService.show();
-      this.api
-        .apiTasksIdDelete(user.id!)
-        .pipe(finalize(() => this.loadingService.hide()))
-        .subscribe(() => this.loadData());
-    }
-  });
-
-}
-
-
-
-
-
-setting(userId: number) {
-  this.router.navigate(['/backend/setting', userId]);
- }
-
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadingService.show();
+        this.api
+          .apiTasksIdDelete(task.id!)
+          .pipe(finalize(() => this.loadingService.hide()))
+          .subscribe(() => this.loadData());
+      }
+    });
+  }
 
 }

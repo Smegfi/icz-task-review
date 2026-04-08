@@ -8,11 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule],
   template: `
-    <h2 mat-dialog-title>{{ data.title || 'Potvrzení' }}</h2>
+    <h2 mat-dialog-title>{{ data.title || 'Confirm' }}</h2>
     <mat-dialog-content>{{ data.message }}</mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button (click)="cancel()">Ne</button>
-      <button mat-flat-button color="warn" (click)="confirm()">Ano</button>
+      <button mat-button (click)="cancel()">No</button>
+      <button mat-flat-button color="warn" (click)="confirm()">Yes</button>
     </mat-dialog-actions>
   `
 })

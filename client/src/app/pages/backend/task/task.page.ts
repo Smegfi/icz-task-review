@@ -60,7 +60,7 @@ export class TaskPage implements OnInit {
 
   add() {
     const dialogRef = this.dialog.open(UserEditDialog, {
-      data: { user: {} as Task }
+      data: {} as Task
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.loadData();
@@ -69,7 +69,7 @@ export class TaskPage implements OnInit {
 
   edit(task: Task) {
     const dialogRef = this.dialog.open(UserEditDialog, {
-      data: { user: { ...task } }
+      data: { ...task }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.loadData();

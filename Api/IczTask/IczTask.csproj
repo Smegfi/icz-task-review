@@ -26,13 +26,5 @@
         <Folder Include="Services\" />
     </ItemGroup>
 
-    <ItemGroup>
-        <_ContentIncludedByDefault Remove="ReelsGroupConfig\aqua-game-i.json" />
-        <_ContentIncludedByDefault Remove="ReelsGroupConfig\hot-reel-five.json" />
-        <_ContentIncludedByDefault Remove="ReelsGroupConfig\hot-reel.json" />
-        <_ContentIncludedByDefault Remove="ReelsGroupConfig\multi-game-81.json" />
-        <_ContentIncludedByDefault Remove="ReelsGroupConfig\pharaon.json" />
-        <_ContentIncludedByDefault Remove="ReelsGroupConfig\sizzling.json" />
-    </ItemGroup>
 
 </Project>

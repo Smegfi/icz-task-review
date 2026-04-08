@@ -15,18 +15,34 @@ export class GlobalErrorHandler implements ErrorHandler {
     let title = 'Chyba aplikace';
     let message = 'Došlo k neočekávané chybě.';
 
-    if (err instanceof HttpErrorResponse) {
-      if (err.status === 401) {
-        title = 'Neplatný klíč';
-        message = 'Vaše přihlášení není platné (401).';
-      } else if (err.status >= 500) {
-        title = 'Chyba serveru';
-        message = 'Server je momentálně nedostupný (500).';
-      } else {
-        message = `Chyba komunikace: ${err.statusText} (${err.status})`;
+    switch (true) {
+      case err instanceof HttpErrorResponse:{
+        const httpErrorMap: Record<number, { title: string; message: string }> = {
+          401: {
+            title: 'Neplatný klíč',
+            message: 'Vaše přihlášení není platné (401).'
+          },
+          500: {
+            title: 'Chyba serveru',
+            message: 'Server je momentálně nedostupný (500).'
+          }
+        };
+        
+        const mapped = httpErrorMap[err.status];
+        if (mapped) {
+          title = mapped.title;
+          message = mapped.message;
+        } 
+   
+        break;
       }
-    } else {
-      message = err.message || message;
+      case err instanceof Error:
+        message = err.message;
+        break;
+
+      case typeof err === 'string':
+        message = err;
+        break;
     }
 
     Swal.fire({

@@ -65,3 +65,20 @@ jobs:
         with:
           name: icztask-api
           path: ./Api/IczTask/bin/Release/net9.0/publish
+          
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: icztask-api
+          path: ./publish
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: site62649.siteasp.net
+          username: site62649
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./publish/
+          # MonsterASP usually hosts from the root, but if you need a specific subfolder, 
+          # specify it in server-dir (e.g., /wwwroot/)
+          server-dir: /wwwroot/
